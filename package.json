@@ -1,0 +1,13 @@
+{
+    "name": "letterboxd-csv-imdb-tmdb-mapper",
+    "description": "A Node.js script that adds IMDb and TMDB IDs to a Letterboxd exported CSV file.",
+    "type": "module",
+    "author": "Tetrax-10",
+    "license": "MIT",
+    "scripts": {
+        "scrape": "node scripts/scraper.js"
+    },
+    "dependencies": {
+        "cheerio": "^1.0.0"
+    }
+}
