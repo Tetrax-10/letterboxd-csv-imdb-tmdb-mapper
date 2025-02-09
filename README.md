@@ -42,7 +42,7 @@ npm install
 #### Additional arguments:
 
 ```bash
-npm run scrape "watched.csv" imdb b10
+npm run scrape "watched.csv" -- imdb b10
 ```
 
 -   `imdb`: IMDb format output

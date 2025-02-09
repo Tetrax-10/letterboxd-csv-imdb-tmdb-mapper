@@ -4,3 +4,4 @@ output
 cache
 node_modules
 *.ps1
+*.txt
