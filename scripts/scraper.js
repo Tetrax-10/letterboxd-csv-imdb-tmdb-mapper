@@ -91,7 +91,7 @@ async function scrapeData(film) {
         // Load the page content into cheerio for parsing
         const $ = cheerio.load(body)
 
-        const tmdbHref = $('.micro-button[data-track-action="TMDb"]')?.attr("href") || ""
+        const tmdbHref = $('.micro-button[data-track-action="TMDB"]')?.attr("href") || ""
         const imdbHref = $('.micro-button[data-track-action="IMDb"]')?.attr("href") || ""
 
         const TmdbIdType = tmdbHref.match(/\/(movie|tv)\/(\d+)\//)?.[1] || ""
