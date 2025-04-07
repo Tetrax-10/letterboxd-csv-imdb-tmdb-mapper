@@ -156,7 +156,13 @@ function findValueByPrefix(object, prefix) {
 
         if (cacheValue) {
             const [TmdbIdType = "", TmdbId = "", ImdbId = ""] = cacheValue.split("|")
-            idData = { TmdbIdType, TmdbId, ImdbId }
+            if ((!TmdbIdType || !TmdbId || !ImdbId) && !noCache) {
+                console.log(`Some cache value is missing for ${film.Name} (${film.Year}), trying to scrape again...`)
+                idData = await scrapeData(film)
+                cache[cacheKey] = `${idData.TmdbIdType}|${idData.TmdbId}|${idData.ImdbId}`
+            } else {
+                idData = { TmdbIdType, TmdbId, ImdbId }
+            }
         } else if (!noCache) {
             idData = await scrapeData(film)
             cache[cacheKey] = `${idData.TmdbIdType}|${idData.TmdbId}|${idData.ImdbId}`
