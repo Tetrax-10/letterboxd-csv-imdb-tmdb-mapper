@@ -6,7 +6,12 @@ import * as cheerio from "cheerio"
 const fileName = process.argv.find((e) => e.includes(".csv"))
 const imdbCompatible = process.argv.includes("imdb") ?? false
 const convertRatingToBase10 = process.argv.includes("b10") ?? false
-const noCache = process.argv.includes("nocache") ?? false
+const isDiary = process.argv.includes("diary") ?? false
+
+if (fileName === "diary.csv" && !isDiary) {
+    console.warn("When processing diary.csv, please use the -- diary flag")
+    process.exit(0)
+}
 
 function csvToJson(text, quoteChar = '"', delimiter = ",") {
     text = text.trim()
@@ -156,14 +161,14 @@ function findValueByPrefix(object, prefix) {
 
         if (cacheValue) {
             const [TmdbIdType = "", TmdbId = "", ImdbId = ""] = cacheValue.split("|")
-            if ((!TmdbIdType || !TmdbId || !ImdbId) && !noCache) {
+            if ((!TmdbIdType || !TmdbId || !ImdbId) && !isDiary) {
                 console.log(`Some cache value is missing for ${film.Name} (${film.Year}), trying to scrape again...`)
                 idData = await scrapeData(film)
                 cache[cacheKey] = `${idData.TmdbIdType}|${idData.TmdbId}|${idData.ImdbId}`
             } else {
                 idData = { TmdbIdType, TmdbId, ImdbId }
             }
-        } else if (!noCache) {
+        } else if (!isDiary) {
             idData = await scrapeData(film)
             cache[cacheKey] = `${idData.TmdbIdType}|${idData.TmdbId}|${idData.ImdbId}`
         }
@@ -178,7 +183,7 @@ function findValueByPrefix(object, prefix) {
     }
 
     // save cache
-    if (!noCache) fs.writeFileSync(cacheFilePath, JSON.stringify(cache, null, 2))
+    if (!isDiary) fs.writeFileSync(cacheFilePath, JSON.stringify(cache, null, 2))
 
     // save output file
     const csv = jsonToCsv(rawCsvJson)

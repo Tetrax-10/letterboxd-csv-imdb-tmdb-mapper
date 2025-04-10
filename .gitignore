@@ -1,7 +1,7 @@
 .vscode
-input
 output
 cache
+misc
 node_modules
 *.ps1
 *.txt
